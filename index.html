@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#0f766e" />
+    <title>إنجاز - منظم المهام والأهداف الذكي</title>
+    <meta name="description" content="تطبيق جوال متكامل لإدارة المهام، التنبيهات المتكررة، مزامنة التقويم وتتبع الأهداف" />
+    <link rel="icon" type="image/svg+xml" href="/app-icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/app-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-['Cairo',sans-serif] antialiased selection:bg-emerald-500/20 selection:text-emerald-700 dark:selection:text-emerald-300">
+    <script>
+      // Per AI Studio environment: HMR is disabled, ignore Vite WebSocket connection errors
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event && event.reason) {
+          var msg = event.reason.message || String(event.reason);
+          if (msg.includes('WebSocket') || msg.includes('vite') || msg.includes('ws')) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }
+      });
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

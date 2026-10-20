@@ -1,0 +1,19 @@
+{
+  "name": "إنجاز - منظم المهام والأهداف",
+  "short_name": "إنجاز",
+  "description": "تطبيق متكامل لإدارة المهام والأهداف، تتبع التقدم، الملاحظات والتقويم",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "إنجاز - إدارة المهام والأهداف",
+  "description": "تطبيق متقدم لتنظيم المهام حسب الأولويات، التنبيهات المتكررة، مزامنة التقويم، تتبع الأهداف وتحليلات البيانات مع دعم التصدير بصيغة PDF والوضع الليلي.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
