@@ -1,4 +1,5 @@
 import { Task, Goal, AppNotification, DailyBriefingSettings, HabitStreak } from '../types';
+import { Capacitor } from '@capacitor/core';
 import { StorageService } from './storage';
 
 export interface SyncPayload {
@@ -15,6 +16,7 @@ export interface SyncPayload {
 const STORAGE_KEY_SYNC_ID = 'injaz_device_sync_key_v2';
 const STORAGE_KEY_AUTO_SYNC = 'injaz_auto_sync_enabled_v2';
 const STORAGE_KEY_LAST_SYNC_TIME = 'injaz_last_sync_time_v2';
+const SYNC_API_BASE_URL = Capacitor.isNativePlatform() ? 'https://injaz-orpin.vercel.app' : '';
 
 async function readSyncResponse(res: Response): Promise<{ error?: string; data?: SyncPayload; updatedAt?: string }> {
   if (!res.headers.get('content-type')?.includes('json')) {
@@ -69,7 +71,7 @@ export const CloudSyncService = {
   async pushToServer(syncKey: string, deviceName?: string): Promise<{ success: boolean; updatedAt: string; error?: string }> {
     try {
       const payload = this.createCurrentPayload(deviceName);
-      const res = await fetch('/api/sync/push', {
+      const res = await fetch(`${SYNC_API_BASE_URL}/api/sync/push`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -91,7 +93,7 @@ export const CloudSyncService = {
   async pullFromServer(syncKey: string): Promise<{ success: boolean; data?: SyncPayload; updatedAt?: string; error?: string }> {
     try {
       const normalized = syncKey.trim().toUpperCase();
-      const res = await fetch(`/api/sync/pull/${encodeURIComponent(normalized)}`);
+      const res = await fetch(`${SYNC_API_BASE_URL}/api/sync/pull/${encodeURIComponent(normalized)}`);
       const resData = await readSyncResponse(res);
 
       if (!res.ok) {
