@@ -5,7 +5,7 @@ import {
   SyncStoreUnavailableError,
   type SyncRequest,
   type SyncResponse,
-} from '../../_lib/syncStore';
+} from '../../_lib/syncStore.js';
 
 export default async function handler(req: SyncRequest, res: SyncResponse): Promise<void> {
   setCorsHeaders(res);
