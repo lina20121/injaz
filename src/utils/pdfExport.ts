@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Task, Goal } from '../types';
+import { downloadFile } from './fileDownload';
 
 export interface PdfExportOptions {
   title?: string;
@@ -57,8 +58,7 @@ export async function exportElementToPdf(
       heightLeft -= pageHeight;
     }
 
-    pdf.save(fileName);
-    return true;
+    return await downloadFile(fileName, pdf.output('blob'));
   } catch (error) {
     console.error('Failed to generate PDF:', error);
     // Fallback to native window.print if html2canvas/jspdf encounters canvas limitation

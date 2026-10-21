@@ -19,6 +19,7 @@ import confetti from 'canvas-confetti';
 import { CloudSyncService, SyncPayload } from '../../utils/cloudSyncService';
 import { StorageService } from '../../utils/storage';
 import { formatTimeArabic } from '../../utils/dateUtils';
+import { downloadFile } from '../../utils/fileDownload';
 
 interface DeviceSyncModalProps {
   isOpen: boolean;
@@ -150,15 +151,10 @@ export const DeviceSyncModal: React.FC<DeviceSyncModalProps> = ({
   };
 
   // File export/import
-  const handleExportBackupFile = () => {
+  const handleExportBackupFile = async () => {
     const backupJson = StorageService.exportFullBackup();
     const blob = new Blob([backupJson], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `injaz_backup_${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
+    await downloadFile(`injaz_backup_${new Date().toISOString().split('T')[0]}.json`, blob);
   };
 
   const handleImportBackupFile = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,5 +1,6 @@
 import { Task } from '../types';
 import { CATEGORY_CONFIG, PRIORITY_CONFIG } from './constants';
+import { downloadFile } from './fileDownload';
 
 /**
  * Format a Date or date+time string into iCalendar UTC/Local format: YYYYMMDDTHHmmSS
@@ -162,12 +163,7 @@ function escapeIcsText(text: string): string {
 /**
  * Trigger browser file download of .ics
  */
-export function downloadIcsFile(filename: string, icsContent: string) {
+export function downloadIcsFile(filename: string, icsContent: string): Promise<boolean> {
   const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.setAttribute('download', filename.endsWith('.ics') ? filename : `${filename}.ics`);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  return downloadFile(filename.endsWith('.ics') ? filename : `${filename}.ics`, blob);
 }

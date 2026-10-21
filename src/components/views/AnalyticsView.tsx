@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { Task, Goal } from '../../types';
 import { PRIORITY_CONFIG, CATEGORY_CONFIG } from '../../utils/constants';
-import { ARABIC_WEEKDAYS_SHORT, getTodayStr } from '../../utils/dateUtils';
+import { ARABIC_WEEKDAYS_SHORT } from '../../utils/dateUtils';
 
 interface AnalyticsViewProps {
   tasks: Task[];
@@ -73,27 +73,30 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
     return Object.values(counts);
   }, [tasks]);
 
-  // 3. Weekly Completion Trend Data (Last 7 days mock & real dates)
+  // 3. Weekly Completion Trend Data (Last 7 days)
   const weeklyData = useMemo(() => {
-    const days: { dayName: string; completed: number; created: number }[] = [];
+    const completedByDate = new Map<string, number>();
+    tasks.forEach(task => {
+      if (!task.completed || !task.completedAt) return;
+      const completedAt = new Date(task.completedAt);
+      if (Number.isNaN(completedAt.getTime())) return;
+
+      const dateStr = `${completedAt.getFullYear()}-${String(completedAt.getMonth() + 1).padStart(2, '0')}-${String(completedAt.getDate()).padStart(2, '0')}`;
+      completedByDate.set(dateStr, (completedByDate.get(dateStr) || 0) + 1);
+    });
+
+    const days: { dayName: string; completed: number }[] = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     for (let i = 6; i >= 0; i--) {
-      const d = new Date(Date.now() - i * 86400000);
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
       const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       const dayIdx = (d.getDay() + 1) % 7;
-      const dayName = ARABIC_WEEKDAYS_SHORT[dayIdx];
-
-      const completedOnDay = tasks.filter(t => t.completed && t.completedAt && t.completedAt.startsWith(dateStr)).length;
-      // Also match tasks scheduled on that day for activity
-      const scheduledOnDay = tasks.filter(t => t.dueDate === dateStr).length;
-
-      days.push({
-        dayName,
-        completed: completedOnDay || (i === 0 ? completedTasks % 5 : Math.max(1, (i * 2) % 4)),
-        created: scheduledOnDay || Math.max(1, (i + 1) % 3),
-      });
+      days.push({ dayName: ARABIC_WEEKDAYS_SHORT[dayIdx], completed: completedByDate.get(dateStr) || 0 });
     }
     return days;
-  }, [tasks, completedTasks]);
+  }, [tasks]);
 
   return (
     <div className="space-y-6 pb-24">
