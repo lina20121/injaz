@@ -102,7 +102,7 @@ async function createWindow() {
     if (url.startsWith('https://')) shell.openExternal(url);
     return { action: 'deny' };
   });
-  await window.loadURL(`http://127.0.0.1:${address.port}`);
+  await window.loadURL(`http://127.0.0.1:${address.port}?platform=electron`);
 }
 
 app.whenReady().then(() => {

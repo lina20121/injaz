@@ -16,7 +16,8 @@ export interface SyncPayload {
 const STORAGE_KEY_SYNC_ID = 'injaz_device_sync_key_v2';
 const STORAGE_KEY_AUTO_SYNC = 'injaz_auto_sync_enabled_v2';
 const STORAGE_KEY_LAST_SYNC_TIME = 'injaz_last_sync_time_v2';
-const SYNC_API_BASE_URL = Capacitor.isNativePlatform() ? 'https://injaz-orpin.vercel.app' : '';
+const IS_ELECTRON = new URLSearchParams(window.location.search).get('platform') === 'electron';
+const SYNC_API_BASE_URL = Capacitor.isNativePlatform() || IS_ELECTRON ? 'https://injaz-orpin.vercel.app' : '';
 
 async function readSyncResponse(res: Response): Promise<{ error?: string; data?: SyncPayload; updatedAt?: string }> {
   if (!res.headers.get('content-type')?.includes('json')) {
